@@ -3,10 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to machine-learning's documentation!
-============================================
+===============================================================================
+Machine Learning Reference Documentation
+===============================================================================
 
-Contents:
+Contents
+********
 
 .. toctree::
    :maxdepth: 2
@@ -16,7 +18,7 @@ Contents:
 Excellent Reference: http://ml-cheatsheet.readthedocs.io/en/latest/index.html
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
