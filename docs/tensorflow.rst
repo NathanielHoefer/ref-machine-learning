@@ -490,6 +490,105 @@ Conduct Training
 
         sess.close()
 
+Debugging and Monitoring
+------------------------
+
+Names
+~~~~~
+
+Many elements have a name property that can be used to identify it within the graph
+
+.. code-block:: python
+    :caption: Implement by passing name argument into constructor
+
+    x = tf.placeholder(tf.float32, shape=[None, 784], name="images")
+
+Name Scopes
+~~~~~~~~~~~
+
+Provides a way of grouping elements
+
+.. code-block:: python
+    :caption: Implement by including a ``with`` statement before instantiating tensors
+
+    with tf.name_scope('Conv1')
+        W_conv1 = weight_variable([5, 5, 1, 32], name="weight")
+
+TensorBoard
+~~~~~~~~~~~
+
+Used for visualizing learning, visualize computation graph, and monitor performance
+
+Adding Support for TensorBoard
+    - Define log file location
+    - Define names and name scopes
+    - Add Summary methods
+    - Train the model
+    - Run TensorBoard
+
+Items Needed
+    #. Path to location where logs will be stored
+    #. Names and Name scopes for all desired elements
+    #. Code to write the data for visualization
+
+    .. code-block:: python
+
+        # TB - Write the default graph out so we can view it's structure
+        tbWriter = tf.summary.FileWriter(logPath, sess.graph)
+
+.. code-block:: bash
+    :caption: To view the tensor board, execute the following command
+
+    tensorboard --log <path to logs>
+
+Types of Data Collections
+    1. Raw Values
+        .. code-block:: python
+
+            tf.summary.scalar("training_accuracy", accuracy)
+
+    2. Summary Statistics
+        .. code-block:: python
+            :caption: Collecting variable summaries
+
+            #   Adds summaries statistics for use in TensorBoard visualization.
+            #      From https://www.tensorflow.org/get_started/summaries_and_tensorboard
+            def variable_summaries(var):
+               with tf.name_scope('summaries'):
+                mean = tf.reduce_mean(var)
+                tf.summary.scalar('mean', mean)
+                with tf.name_scope('stddev'):
+                  stddev = tf.sqrt(tf.reduce_mean(tf.square(var - mean)))
+                tf.summary.scalar('stddev', stddev)
+                tf.summary.scalar('max', tf.reduce_max(var))
+                tf.summary.scalar('min', tf.reduce_min(var))
+                tf.summary.histogram('histogram', var)
+
+    3. Histograms
+        .. code-block:: python
+
+            tf.summary.histogram('conv_wx_b', conv1_wx_b)
+
+    4. Sample Images
+        .. code-block:: python
+            :caption: Image must be in correct dimension tensor (such as after reshape)
+
+            tf.summary.image('input_img', x_image, 5)
+
+
+.. code-block:: python
+    :caption: Once all of the summaries have been specified in the code, they must all be merged
+
+    summarize_all = tf.summary.merge_all()
+
+    # In the session run, periodically writing summary to log
+    _, summary = sess.run([train_step, summarize_all], feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+
+    tbWriter.add_summary(summary, <training step>)
+
+
+
+
 Methods Used
 ------------
 
