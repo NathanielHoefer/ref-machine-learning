@@ -13,6 +13,8 @@ Contents:
 
    tensorflow
 
+Excellent Reference: http://ml-cheatsheet.readthedocs.io/en/latest/index.html
+
 Indices and tables
 ==================
 
